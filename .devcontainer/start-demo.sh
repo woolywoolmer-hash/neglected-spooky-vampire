@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# A private development-workspace launcher, not a public deployment.
+# Private Codespaces demo launcher. Uses Next.js dev mode so the preview can
+# recover cleanly even when a production build has not been generated yet.
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
@@ -26,34 +27,32 @@ if is_demo_ready; then
   exit 0
 fi
 
-if [[ ! -f .next/BUILD_ID ]]; then
-  echo 'Build the application first with: npm ci && npm run build' >&2
-  exit 1
-fi
-
 mkdir -p .data
-# Empty public Supabase settings explicitly keep this review launcher in demo mode,
-# even if the workspace also has unrelated Supabase secrets or a .env.local file.
+
+# Keep the review workspace deliberately in demo mode. In development mode the
+# demo does not require Supabase or any real credentials/data.
 nohup env \
   NEXT_PUBLIC_SUPABASE_URL='' \
   NEXT_PUBLIC_SUPABASE_ANON_KEY='' \
   ALLOW_DEMO=true \
   DEMO_DATABASE_PATH=".data/browser-demo-${review_port}" \
-  npm run start -- --port "$review_port" \
+  npm run dev -- --port "$review_port" \
   > ".data/browser-demo-${review_port}.log" 2>&1 < /dev/null &
 review_pid=$!
 
-for ((attempt = 0; attempt < 30; attempt++)); do
+for ((attempt = 0; attempt < 60; attempt++)); do
   if is_demo_ready; then
     echo "Fieldwork demo is ready on port ${review_port}. No application password is required."
     exit 0
   fi
   if ! kill -0 "$review_pid" 2>/dev/null; then
-    echo "Demo startup failed. See .data/browser-demo-${review_port}.log." >&2
+    echo "Demo startup failed. Last log lines:" >&2
+    tail -n 60 ".data/browser-demo-${review_port}.log" >&2 || true
     exit 1
   fi
   sleep 1
 done
 
-echo "Demo did not become ready. See .data/browser-demo-${review_port}.log." >&2
+echo "Demo did not become ready. Last log lines:" >&2
+tail -n 60 ".data/browser-demo-${review_port}.log" >&2 || true
 exit 1
