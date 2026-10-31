@@ -1,0 +1,64 @@
+:root {
+  --sport-regis-navy: #18243f;
+  --sport-regis-maroon: #7a3144;
+  --sport-regis-cream: #f6f1e8;
+  --sport-regis-gold: #b59a63;
+}
+
+/* Port Regis-inspired, without reproducing official artwork. */
+.brand {
+  color: var(--sport-regis-navy);
+}
+.brand::after {
+  content: 'Sport Regis';
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 26px;
+  letter-spacing: -0.4px;
+  font-weight: 600;
+}
+.brand > .brand-mark,
+.brand > .brand-dot {
+  display: none;
+}
+.brand {
+  font-size: 0;
+}
+.organisation-mark {
+  background: var(--sport-regis-navy);
+  color: #fff;
+  border-color: var(--sport-regis-navy);
+}
+.sidebar {
+  background: #f5f2ec;
+  border-right-color: #e3ddd2;
+}
+.nav-item.selected {
+  color: var(--sport-regis-navy);
+}
+.nav-dot,
+.nav-badge {
+  background: var(--sport-regis-maroon) !important;
+}
+.primary,
+button.primary {
+  background: var(--sport-regis-navy) !important;
+}
+.eyebrow,
+.bd-eyebrow {
+  color: var(--sport-regis-maroon) !important;
+}
+
+.school-break-warning {
+  border: 1px solid #decaa1;
+  background: #fff8e8;
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #5f4c2d;
+}
+.conflict-warning {
+  border: 1px solid #dfb9bd;
+  background: #fff1f2;
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #6f2e39;
+}
