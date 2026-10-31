@@ -1,4 +1,5 @@
-import Workspace from '@/components/Workspace';
+import SportRegisHome from '@/components/SportRegisHome';
+
 export default function Page() {
-  return <Workspace />;
+  return <SportRegisHome />;
 }
