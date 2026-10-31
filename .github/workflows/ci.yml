@@ -34,3 +34,9 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+      - name: Codespaces demo startup smoke test
+        run: |
+          bash .devcontainer/start-demo.sh
+          curl --fail --silent --show-error http://127.0.0.1:3000/api/session
+          curl --fail --silent --show-error http://127.0.0.1:3000/ > /dev/null
